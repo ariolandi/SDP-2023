@@ -52,7 +52,7 @@ Stack<T>::Stack(const Stack<T>& other): top_node(nullptr) {
 
 template <typename T>
 Stack<T>& Stack<T>::operator=(const Stack<T>& other) {
-    if (this!= &other) {
+    if (this != &other) {
         clear();
         copy(other.top_node);
     }
@@ -74,6 +74,8 @@ void Stack<T>::push(const T& value) {
 
 template <typename T>
 void Stack<T>::pop() {
+    if (empty()) throw(std::logic_error("Stack is empty!"));
+
     Node* node = top_node;
     top_node = top_node->next;
     delete node;
@@ -81,6 +83,8 @@ void Stack<T>::pop() {
 
 template <typename T>
 const T& Stack<T>::top() const {
+    if (empty()) throw(std::logic_error("Stack is empty!"));
+
     return top_node->value;
 }
 

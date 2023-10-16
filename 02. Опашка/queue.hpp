@@ -1,5 +1,5 @@
-#ifndef _STACK_
-#define _STACK_
+#ifndef _QUEUE_
+#define _QUEUE_
 
 template <typename T>
 class Queue {
@@ -11,7 +11,7 @@ class Queue {
         Node(const T& value, Node* next = nullptr): value(value), next(next) {}
     };
     
-    Node* top_node;                          // указател към върха на стека
+    Node *head, *end;                        // указатели към главата и края на опашката
 
     void copy(const Node*);
     void clear();
@@ -21,7 +21,7 @@ public:
     Queue& operator=(const Queue<T>&);
     ~Queue();
 
-    // Основни методи за работа със стек
+    // Основни методи за работа с опашка
     void push(const T& value);
     void pop();
     const T& front() const;
@@ -31,30 +31,30 @@ public:
 template <typename T>
 void Queue<T>::copy(const Node* node) {
     if (node == nullptr) return;
-    copy(node->next);
     push(node->value);
+    copy(node->next);
 }
 
 template <typename T>
 void Queue<T>::clear() {
-    while(top_node) {
+    while(head) {
         pop();
     }
 }
 
 template <typename T>
-Queue<T>::Queue(): top_node(nullptr) {}
+Queue<T>::Queue(): head(nullptr), end(nullptr) {}
 
 template <typename T>
-Queue<T>::Queue(const Queue<T>& other): top_node(nullptr) {
-    copy(other.top_node);
+Queue<T>::Queue(const Queue<T>& other): head(nullptr), end(nullptr) {
+    copy(other.head);
 }
 
 template <typename T>
 Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
     if (this != &other) {
         clear();
-        copy(other.top_node);
+        copy(other.head);
     }
 
     return *this;
@@ -67,29 +67,35 @@ Queue<T>::~Queue() {
 
 template <typename T>
 void Queue<T>::push(const T& value) {
-    Node* node = new Node(value, top_node);
-    top_node = node;
+    Node* node = new Node(value);
+    if (front) {
+        end->next = node;
+    } else {
+        front = node;
+    }
+    end = node;
 }
 
 template <typename T>
 void Queue<T>::pop() {
-    if (empty()) throw(std::logic_error("Stack is empty!"));
+    if (empty()) throw(std::logic_error("Queue is empty!"));
 
-    Node* node = top_node;
-    top_node = top_node->next;
+    Node* node = head;
+    head = head->next;
+    if(empty()) end = nullptr;
     delete node;
 }
 
 template <typename T>
 const T& Queue<T>::front() const {
-    if (empty()) throw(std::logic_error("Stack is empty!"));
+    if (empty()) throw(std::logic_error("Queue is empty!"));
 
-    return top_node->value;
+    return head->value;
 }
 
 template <typename T>
 bool Queue<T>::empty() const {
-    return top_node == nullptr;
+    return head == nullptr;
 }
 
-#endif // _STACK_
+#endif // _QUEUE_

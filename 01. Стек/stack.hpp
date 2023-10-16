@@ -2,7 +2,7 @@
 #define _STACK_
 
 template <typename T>
-class Queue {
+class Stack {
     // Динамично представяне чрез серия от възли
     struct Node {
         T value;                             // стойност
@@ -16,10 +16,10 @@ class Queue {
     void copy(const Node*);
     void clear();
 public:
-    Queue();
-    Queue(const Queue<T>&);
-    Queue& operator=(const Queue<T>&);
-    ~Queue();
+    Stack();
+    Stack(const Stack<T>&);
+    Stack& operator=(const Stack<T>&);
+    ~Stack();
 
     // Основни методи за работа със стек
     void push(const T& value);
@@ -29,29 +29,29 @@ public:
 };
 
 template <typename T>
-void Queue<T>::copy(const Node* node) {
+void Stack<T>::copy(const Node* node) {
     if (node == nullptr) return;
     copy(node->next);
     push(node->value);
 }
 
 template <typename T>
-void Queue<T>::clear() {
+void Stack<T>::clear() {
     while(top_node) {
         pop();
     }
 }
 
 template <typename T>
-Queue<T>::Queue(): top_node(nullptr) {}
+Stack<T>::Stack(): top_node(nullptr) {}
 
 template <typename T>
-Queue<T>::Queue(const Queue<T>& other): top_node(nullptr) {
+Stack<T>::Stack(const Stack<T>& other): top_node(nullptr) {
     copy(other.top_node);
 }
 
 template <typename T>
-Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
+Stack<T>& Stack<T>::operator=(const Stack<T>& other) {
     if (this != &other) {
         clear();
         copy(other.top_node);
@@ -61,18 +61,18 @@ Queue<T>& Queue<T>::operator=(const Queue<T>& other) {
 }
 
 template <typename T>
-Queue<T>::~Queue() {
+Stack<T>::~Stack() {
     clear();
 }
 
 template <typename T>
-void Queue<T>::push(const T& value) {
+void Stack<T>::push(const T& value) {
     Node* node = new Node(value, top_node);
     top_node = node;
 }
 
 template <typename T>
-void Queue<T>::pop() {
+void Stack<T>::pop() {
     if (empty()) throw(std::logic_error("Stack is empty!"));
 
     Node* node = top_node;
@@ -81,14 +81,14 @@ void Queue<T>::pop() {
 }
 
 template <typename T>
-const T& Queue<T>::front() const {
+const T& Stack<T>::front() const {
     if (empty()) throw(std::logic_error("Stack is empty!"));
 
     return top_node->value;
 }
 
 template <typename T>
-bool Queue<T>::empty() const {
+bool Stack<T>::empty() const {
     return top_node == nullptr;
 }
 

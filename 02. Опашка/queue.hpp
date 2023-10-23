@@ -68,10 +68,10 @@ Queue<T>::~Queue() {
 template <typename T>
 void Queue<T>::push(const T& value) {
     Node* node = new Node(value);
-    if (front) {
+    if (head) {
         end->next = node;
     } else {
-        front = node;
+        head = node;
     }
     end = node;
 }

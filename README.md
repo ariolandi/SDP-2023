@@ -16,9 +16,16 @@
 ### Седмица 3 - упражнение
 - [Задание в час](https://classroom.github.com/a/P_EGfBLm)
 
+
 ### Седмица 4 - списък
 - Едносвързан списък
 - std::forward_list
 - Итератор
 - [Задание в час](https://classroom.github.com/a/umRGaHjv)
 
+
+### Седмица 5 - двойно свързан списък
+- Двойно свързан списък
+- std::list
+- Итератор
+- [Задание в час](https://classroom.github.com/a/o4Lphjsq)

@@ -107,6 +107,7 @@ void DL_List<T>::push_back(const T &value) {
 template <typename T>
 void DL_List<T>::push_front(const T& value) {
     Node* new_node = new Node(value, first);
+    if(empty()) last = new_node;
     first = new_node;
 }
 
@@ -116,7 +117,9 @@ void DL_List<T>::pop_front() {
 
     Node* to_be_delete = first;
     first = first->next;
-    first->previous = nullptr;
+    if(empty()) last = nullptr;
+    else first->previous = nullptr;
+
     delete to_be_delete;
 }
 
@@ -126,7 +129,9 @@ void DL_List<T>::pop_back() {
 
     Node* to_be_delete = last;
     last = last->previous;
-    last->next = nullptr;
+    if(last == nullptr) first = nullptr;
+    else last->next = nullptr;
+
     delete to_be_delete;
 }
 

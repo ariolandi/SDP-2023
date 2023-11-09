@@ -78,7 +78,7 @@ ready 2
 **Вход:** \
 6 \
 5 KILL \
-2 PASS \
+2 AWAY \
 4 KILL \
 1 KILL \
 3 PASS \

@@ -1,20 +1,84 @@
 # Стек
 
 ## Синтаксис
-```
+
+Ще използваме следната структура, представяща елемент на стека 
+```c++
 template <typename T>
 struct Node {   
   T value;          // стойност на полето
   Node<T>* next;    // връзка към следващото поле
+
+  Node(const T& value, Node<T>* next=nullptr): value(value), next(next) {}
 };
 ```
 
-- LIFO методология
+**LIFO методология** - Last-In-First-Out (последен влязъл, първи излязъл)
 
+**Стандартни методи за работа със стек:**
+- **top()** -> Връща стойността на елемента, намиращ се във върха на стека
+<pre>
+    | x |
+s = | y |   s.top() -> x
+    | z |
+    |---|
+</pre>
+
+
+- **push(*value*)** -> Добавя нов елемент със стойност *value* във върха на стека
+<pre>
+                            | a |
+    | x |                   | x |
+s = | y |   s.push(a) -> s= | y |
+    | z |                   | z |
+    |---|                   |---|
+</pre>
+```c++
+template <typename T>
+void push(const T& value, Node<T>*& node) {
+  Node<T>* to_be_added = new Node<T>(value, node);
+  node = to_be_added;
+}
+```
+
+- **pop()** -> Премахва елемент от върха на стека
+<pre>
+    | a |
+    | x |                   | x |
+s = | y |   s.pop() ->   s= | y |
+    | z |                   | z |
+    |---|                   |---|
+</pre>
+```c++
+template <typename T>
+void pop(Node<T>*& node) {
+  if(!node) return;
+
+  Node<T>* to_be_deleted = node;
+  node = node->next;
+  delete to_be_deleted;
+}
+```
+
+- **empty()** -> Проверява дали стекът е празен. Връща true, ако е така, и false в противен случай
+<pre>
+    | a |
+    | x |                 
+s = | y |   s.empty() -> false 
+    | z |   
+    |---|
+   
+s = |   |   s.empty() -> true 
+    |---| 
+</pre>
 
 
 ### std::stack
 
+**Библиотека:** stack
+**Дефиниция:**  std::stack<*T*> - празен стек от тип *T*
+
+**Вградени методи:**
 - top() -> Връща стойността на елемента, намиращ се във върха на стека
 - push(*x*) -> Добавя нов елемент със стойност *x* във върха на стека
 - pop() -> Премахва елемент от върха на стека

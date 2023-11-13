@@ -1,6 +1,6 @@
 #ifndef _STACK_
 #define _STACK_
-
+#include <stdexcept>
 template <typename T>
 class Stack {
     // Динамично представяне чрез серия от възли
@@ -18,16 +18,17 @@ class Stack {
 public:
     Stack();
     Stack(const Stack<T>&);
-    Stack& operator=(const Stack<T>&);
+    Stack<T>& operator=(const Stack<T>&);
     ~Stack();
 
     // Основни методи за работа със стек
     void push(const T& value);
     void pop();
-    const T& front() const;
+    const T& top() const;
     bool empty() const;
 };
 
+// рекурсивно копиране на стек
 template <typename T>
 void Stack<T>::copy(const Node* node) {
     if (node == nullptr) return;
@@ -65,28 +66,31 @@ Stack<T>::~Stack() {
     clear();
 }
 
+// добавяне на елемент на върха на стека
 template <typename T>
 void Stack<T>::push(const T& value) {
-    Node* node = new Node(value, top_node);
-    top_node = node;
+    top_node = new Node(value, top_node);
 }
 
+// изваждане на елемент от върха на стека
 template <typename T>
 void Stack<T>::pop() {
     if (empty()) throw(std::logic_error("Stack is empty!"));
 
-    Node* node = top_node;
+    Node* to_delete = top_node;
     top_node = top_node->next;
-    delete node;
+    delete to_delete;
 }
 
+// достъп до стойността на елемента на върха на стека
 template <typename T>
-const T& Stack<T>::front() const {
+const T& Stack<T>::top() const {
     if (empty()) throw(std::logic_error("Stack is empty!"));
 
     return top_node->value;
 }
 
+// проверка дали стекът е празен
 template <typename T>
 bool Stack<T>::empty() const {
     return top_node == nullptr;

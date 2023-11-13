@@ -1,5 +1,6 @@
 #ifndef _QUEUE_
 #define _QUEUE_
+#include <stdexcept>
 
 template <typename T>
 class Queue {
@@ -28,6 +29,7 @@ public:
     bool empty() const;
 };
 
+// рекурсивно копиране на опашка
 template <typename T>
 void Queue<T>::copy(const Node* node) {
     if (node == nullptr) return;
@@ -65,17 +67,19 @@ Queue<T>::~Queue() {
     clear();
 }
 
+
+// добавяне на елемент в края на опашката
 template <typename T>
 void Queue<T>::push(const T& value) {
     Node* node = new Node(value);
-    if (head) {
-        end->next = node;
-    } else {
-        head = node;
-    }
+    if (!empty()) end->next = node;
+    else head = node;
+
     end = node;
 }
 
+
+// изваждане на елемент от началото на опашката
 template <typename T>
 void Queue<T>::pop() {
     if (empty()) throw(std::logic_error("Queue is empty!"));
@@ -86,6 +90,8 @@ void Queue<T>::pop() {
     delete node;
 }
 
+
+// достъп до стойността на елемента в началото на опашката
 template <typename T>
 const T& Queue<T>::front() const {
     if (empty()) throw(std::logic_error("Queue is empty!"));
@@ -93,6 +99,7 @@ const T& Queue<T>::front() const {
     return head->value;
 }
 
+// проверка дали опашката е празна
 template <typename T>
 bool Queue<T>::empty() const {
     return head == nullptr;

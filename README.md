@@ -29,3 +29,7 @@
 - std::list
 - Итератор
 - [Задание в час](https://classroom.github.com/a/o4Lphjsq)
+
+
+### Седмица 6 - упражнение
+- [Задание в час](https://classroom.github.com/a/uBMOrx22)

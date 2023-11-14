@@ -2,7 +2,94 @@
 
 ## Синтаксис
 
+Ще използваме следната структура, представяща елемент на списъка
+```c++
+template <typename T>
+struct Node {   
+  T value;          // стойност на полето
+  Node<T>* next;    // връзка към следващото поле
+
+  Node(const T& value, Node<T>* next=nullptr): value(value), next(next) {}
+};
+```
+
+**Стандартни методи за работа със свързан списък:**
+- **front()** -> Връща стойността на елемента, намиращ се в началото на списъка (start)
+<pre>
+     start        
+      v             
+      ---    ---    ---
+l =  | x |->| y |->| z |       l.front() -> x
+      ---    ---    ---
+</pre>
+
+
+- **push_front(*value*)** -> Добавя нов елемент със стойност *value* в началото на списъка (start)
+<pre>
+     start                                              start
+      v                                                   v
+      ---    ---    ---                                  ---    ---    ---    ---
+l =  | x |->| y |->| z |        l.push_front(a) -> l =  | a |->| x |->| y |->| z |  
+      ---    ---    ---                                  ---    ---    ---    ---
+</pre>
+
+```c++
+template <typename T>
+void push_front(const T& value, Node<T>*& head) {
+  head = new Node<T>(value, head);
+}
+```
+
+- **pop_front()** -> Премахва елемент от началото на списъка (start)
+<pre>
+     start                                                 start
+      v                                                      v
+     ---    ---    ---    ---                               ---    ---    ---
+l = | a |->| x |->| y |->| z |       l.pop_front() -> l =  | x |->| y |->| z |   
+     ---    ---    ---    ---                               ---    ---    ---
+</pre>
+
+```c++
+template <typename T>
+void pop_front(Node<T>*& head) {
+  if(!head) return;
+
+  Node<T>* to_be_deleted = head;
+  head = head->next;
+  delete to_be_deleted;
+}
+```
+
+- **empty()** -> Проверява дали списъкът е празен. Връща true, ако е така, и false в противен случай
+<pre>
+     start                 
+      v                        
+      ---    ---    ---    ---                               
+l =  | a |->| x |->| y |->| z |     l.empty() -> false
+      ---    ---    ---    ---    
+
+     start                 
+      v                                                  
+l =  nullptr                        l.empty() -> true
+                                  
+</pre>
+
+
 ### STL forward_list
+
+**Библиотека:** forward_list
+**Дефиниция:**  std::forward_list<*T*> - празен едносвързан списък от тип *T*
+
+**Вградени методи:**
+- push_front(*x*) -> Добавя нов елемент със стойност *x* в началото на списъка
+- pop_front() -> Премахва елемент от началото на списъка
+- empty() -> Проверява дали списъка е празен. Връща true, ако е така, и false в противен случай
+- insert_after(*pos*, *x*) -> Добавя нов елемент със стойност *x* след позиция *pos*, където *pos* е итератор
+- erase_after(*pos*,) -> Изтрива елемента след позиция *pos*, където *pos* е итератор
+- begin() -> Връща итератор към началото на списъка
+- end() -> Връща итератор към края на списъка 
+- remove(*x*) -> Изтрива всички елементи със стойност *x*
+- remove_if(*condition*) -> Изтрива всички елементи, отговарящи на *condition* (булева функция)
 
 
 ### Итератор

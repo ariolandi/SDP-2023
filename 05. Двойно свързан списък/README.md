@@ -2,10 +2,155 @@
 
 ## Синтаксис
 
+Ще използваме следната структура, представяща елемент на списъка
+```c++
+template <typename T>
+struct Node {   
+  T value;          // стойност на полето
+  Node<T>* next;    // връзка към следващото поле
+  Node<T>* prev;    // връзка към предишното поле
+
+  Node(const T& value, Node<T>* prev=nullptr, Node<T>* next=nullptr): value(value), prev(prev), next(next) {}
+};
+```
+
+**Стандартни методи за работа с двусвързан списък:**
+- **front()** -> Връща стойността на елемента, намиращ се в началото на списъка (start)
+<pre>
+     start            end
+      v                v
+      ---     ---     ---
+l =  | x |<->| y |<->| z |       l.front() -> x
+      ---     ---     ---
+</pre>
+
+- **back()** -> Връща стойността на елемента, намиращ се в края на списъка (end)
+<pre>
+     start            end
+      v                v
+      ---     ---     ---
+l =  | x |<->| y |<->| z |       l.back() -> z
+      ---     ---     ---
+</pre>
+
+
+- **push_front(*value*)** -> Добавя нов елемент със стойност *value* в началото на списъка (start)
+<pre>
+     start            end                                  start                   end
+      v                v                                    v                       v
+      ---     ---     ---                                  ---     ---     ---     ---
+l =  | x |<->| y |<->| z |        l.push_front(a) -> l =  | a |<->| x |<->| y |<->| z |  
+      ---     ---     ---                                  ---     ---     ---     ---
+</pre>
+
+```c++
+template <typename T>
+void push_front(const T& value, Node<T>*& head) {
+  Node<T>* new_node = new Node<T>(value, nullptr, head);
+  if(empty(head)) {
+    end = new_node;
+  } else {
+    head->prev = new_node;
+  }
+  head = new_node;
+}
+```
+
+- **push_back(*value*)** -> Добавя нов елемент със стойност *value* в края на списъка (end)
+<pre>
+     start            end                                  start                   end
+      v                v                                    v                       v
+      ---     ---     ---                                  ---     ---     ---     ---
+l =  | x |<->| y |<->| z |        l.push_back(a) ->  l =  | x |<->| y |<->| z |<->| a |  
+      ---     ---     ---                                  ---     ---     ---     ---
+</pre>
+
+```c++
+template <typename T>
+void push_back(const T& value, Node<T>*& head) {
+  Node<T>* new_node = new Node<T>(value, end);
+  if(empty(head)) {
+    head = new_node;
+  } else {
+    end->next = new_node;
+  }
+  end = new_node;
+}
+```
+
+- **pop_front()** -> Премахва елемент от началото на списъка (start)
+<pre>
+     start                   end                              start            end
+      v                       v                                 v               v
+     ---     ---     ---     ---                               ---     ---     ---
+l = | a |<->| x |<->| y |<->| z |       l.pop_front() -> l =  | x |<->| y |<->| z |   
+     ---     ---     ---     ---                               ---     ---     ---
+</pre>
+
+```c++
+template <typename T>
+void pop_front(Node<T>*& head) {
+  if(!head) return;
+
+  Node<T>* to_be_deleted = head;
+  head = head->next;
+  if (!head) end = nullptr;
+  delete to_be_deleted;
+}
+```
+
+- **pop_back()** -> Премахва елемент от края на списъка (end)
+<pre>
+     start                   end                              start            end
+      v                       v                                 v               v
+     ---     ---     ---     ---                               ---     ---     ---
+l = | x |<->| y |<->| z |<->| a |       l.pop_back() ->  l =  | x |<->| y |<->| z |   
+     ---     ---     ---     ---                               ---     ---     ---
+</pre>
+
+```c++
+template <typename T>
+void pop_back(Node<T>*& head) {
+  if(!end) return;
+
+  Node<T>* to_be_deleted = end;
+  end = end->prev;
+  if(!end) head = nullptr;
+  delete to_be_deleted;
+}
+```
+
+- **empty()** -> Проверява дали списъкът е празен. Връща true, ако е така, и false в противен случай
+<pre>
+     start                    end
+      v                        v
+      ---     ---     ---     ---                               
+l =  | a |<->| x |<->| y |<->| z |     l.empty() -> false
+      ---     ---     ---     ---    
+
+     start                 
+      v                                                  
+l =  nullptr <-end                    l.empty() -> true                            
+</pre>
+
+
 ### STL list
 
+**Библиотека:** list
+**Дефиниция:**  std::list<*T*> - празен двусвързан списък от тип *T*
 
-### Итератор
+**Вградени методи:**
+- push_front(*x*) -> Добавя нов елемент със стойност *x* в началото на списъка
+- push_back(*x*) -> Добавя нов елемент със стойност *x* в края на списъка
+- pop_front() -> Премахва елемент от началото на списъка
+- pop_back() -> Премахва елемент от края на списъка
+- empty() -> Проверява дали списъка е празен. Връща true, ако е така, и false в противен случай
+- insert(*pos*, *x*) -> Добавя нов елемент със стойност *x* преди позиция *pos*, където *pos* е итератор
+- erase(*pos*,) -> Изтрива елемента след позиция *pos*, където *pos* е итератор
+- begin() -> Връща итератор към началото на списъка
+- end() -> Връща итератор към края на списъка 
+- remove(*x*) -> Изтрива всички елементи със стойност *x*
+- remove_if(*condition*) -> Изтрива всички елементи, отговарящи на *condition* (булева функция)
 
 
 ## Задачи 

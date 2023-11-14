@@ -196,12 +196,14 @@ const T& DL_List<T>::Iterator::value() const {
     return position->value;    
 }
 
+// префиксен оператор
 template <typename T>
 void DL_List<T>::Iterator::operator++() {
     if (!position) throw std::logic_error("Invalid operation!");
     position = position->next;
 }
 
+// префиксен оператор
 template <typename T>
 void DL_List<T>::Iterator::operator--() {
     if (!position) throw std::logic_error("Invalid operation!");

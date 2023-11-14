@@ -3,8 +3,8 @@
 
 template <typename T>
 class List {
-    struct Node
-    {
+    // Динамично представяне чрез серия от възли
+    struct Node {
         T value;
         Node* next;
 
@@ -39,6 +39,7 @@ public:
     void push_front(const T&);
     void pop_front();
 
+    // итератор
     class Iterator;
 
     List<T>::Iterator begin() const;
@@ -173,6 +174,7 @@ const T& List<T>::Iterator::value() const {
     return position->value;    
 }
 
+// префиксен оператор
 template <typename T>
 void List<T>::Iterator::operator++() {
     if (!position) throw std::logic_error("Invalid operation!");
@@ -185,5 +187,3 @@ bool List<T>::Iterator::operator!=(const List<T>::Iterator& other) const {
 }
 
 #endif // __LIST__
-
-

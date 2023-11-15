@@ -9,7 +9,7 @@ class DL_List {
         Node* next;
         Node *previous;
 
-        Node(const T& value, Node* next = nullptr, Node* previous): value(value), next(next), previous(previous) {}
+        Node(const T& value, Node* previous = nullptr, Node* next = nullptr): value(value), next(next), previous(previous) {}
     };
     Node *first, *last;
     
@@ -47,8 +47,9 @@ public:
     DL_List<T>::Iterator end() const;
 
     void insert_after(const T&, const DL_List<T>::Iterator&);
+    void insert_before(const T&, const DL_List<T>::Iterator&);
     void delete_after(const DL_List<T>::Iterator&);
-
+    void delete_at(const DL_List<T>::Iterator&);
 };
 
 
@@ -94,7 +95,7 @@ const T& DL_List<T>::back() const {
 
 template <typename T>
 void DL_List<T>::push_back(const T &value) {
-    Node* new_node = new Node(value, nullptr, last);
+    Node* new_node = new Node(value, last, nullptr);
     if (empty()) {
         first = new_node;
     } else {
@@ -106,8 +107,9 @@ void DL_List<T>::push_back(const T &value) {
 
 template <typename T>
 void DL_List<T>::push_front(const T& value) {
-    Node* new_node = new Node(value, first);
+    Node* new_node = new Node(value, nullptr, first);
     if(empty()) last = new_node;
+    else first->previous = new_node;
     first = new_node;
 }
 
@@ -159,13 +161,35 @@ void DL_List<T>::delete_after(const DL_List<T>::Iterator& position) {
 }
 
 template <typename T>
+void DL_List<T>::delete_at(const DL_List<T>::Iterator& position) {
+    Node* to_be_deleted = position.position;
+    if (!to_be_deleted) throw std::logic_error("Invalid operation!");
+    Node* next_node = to_be_deleted->next;
+    Node* previous_node = to_be_deleted->previous;
+
+    delete to_be_deleted;
+    if (previous_node) previous_node->next = next_node;
+    if(next_node) next_node->previous = previous_node;
+}
+
+template <typename T>
 void DL_List<T>::insert_after(const T& value, const DL_List<T>::Iterator& position) {
     Node* insert_after_node = position.position;
     if (!insert_after_node) throw std::logic_error("Invalid operation!");
     Node* insert_before_node = insert_after_node->next;
-    Node* new_node = new Node(value, insert_before_node, insert_after_node);
+    Node* new_node = new Node(value, insert_after_node, insert_before_node);
     insert_after_node->next = new_node;
     if (insert_before_node) insert_before_node->previous = new_node;
+}
+
+template <typename T>
+void DL_List<T>::insert_before(const T& value, const DL_List<T>::Iterator& position) {
+    Node* insert_before_node = position.position;
+    if (!insert_before_node) throw std::logic_error("Invalid operation!");
+    Node* insert_after_node = insert_before_node->previous;
+    Node* new_node = new Node(value, insert_after_node, insert_before_node);
+    insert_before_node->previous = new_node;
+    if (insert_after_node) insert_after_node->next = new_node;
 }
 
 template <typename T>
@@ -180,6 +204,8 @@ public:
     void operator++();
     void operator--();
     bool operator !=(const DL_List<T>::Iterator&) const;
+    bool operator ==(const DL_List<T>::Iterator&) const;
+
 
     friend class DL_List<T>;
 };
@@ -215,6 +241,9 @@ bool DL_List<T>::Iterator::operator!=(const DL_List<T>::Iterator& other) const {
     return position != other.position;
 }
 
+template <typename T>
+bool DL_List<T>::Iterator::operator==(const DL_List<T>::Iterator& other) const {
+    return position == other.position;
+}
+
 #endif // __DL_LIST__
-
-

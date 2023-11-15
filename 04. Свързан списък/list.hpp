@@ -1,5 +1,6 @@
 #ifndef __LIST__
 #define __LIST__
+#include <stdexcept>
 
 template <typename T>
 class List {
@@ -106,6 +107,9 @@ void List<T>::push_back(const T &value) {
 template <typename T>
 void List<T>::push_front(const T& value) {
     Node* new_node = new Node(value, first);
+    if(empty()) {
+        last = new_node;
+    }
     first = new_node;
 }
 
@@ -147,6 +151,7 @@ void List<T>::insert_after(const T& value, const List<T>::Iterator& position) {
     insert_after_node->next = new_node;
 }
 
+// Итератор
 template <typename T>
 class List<T>::Iterator {
     Node* position;
@@ -156,7 +161,10 @@ public:
     Iterator(List<T>::Node*);
     
     const T& value() const;
+    const List<T>::Iterator next() const;
+
     void operator++();
+    bool operator ==(const List<T>::Iterator&) const;
     bool operator !=(const List<T>::Iterator&) const;
 
     friend class List<T>;
@@ -174,11 +182,23 @@ const T& List<T>::Iterator::value() const {
     return position->value;    
 }
 
+template <typename T>
+const typename List<T>::Iterator List<T>::Iterator::next() const {
+    if (!position) throw std::logic_error("Invalid operation!");
+    return position->next;    
+}
+
+
 // префиксен оператор
 template <typename T>
 void List<T>::Iterator::operator++() {
     if (!position) throw std::logic_error("Invalid operation!");
     position = position->next;
+}
+
+template <typename T>
+bool List<T>::Iterator::operator==(const List<T>::Iterator& other) const {
+    return position == other.position;
 }
 
 template <typename T>

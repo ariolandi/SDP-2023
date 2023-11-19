@@ -33,3 +33,7 @@
 
 ### Седмица 6 - упражнение
 - [Задание в час](https://classroom.github.com/a/uBMOrx22)
+
+
+### Седмица 7 - двоично дърво
+- [Задание в час](https://classroom.github.com/a/RS_M-hyw)
